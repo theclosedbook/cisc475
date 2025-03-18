@@ -13,20 +13,19 @@ public class Input {
 
 	private String filename;
 
-	private LineStorage ls;
-
 	public Input(String filename) {
 		this.filename = filename;
 	}
 
 	public LineStorage getWords() throws IOException {
-		ls = new CommonLineStorage();
+		LineStorage ls = new CommonLineStorage();
 		BufferedReader br = new BufferedReader(new FileReader(filename));
 		while (true) {
 			String theLine = br.readLine();
 			if (theLine == null)
 				break;
 			int line = ls.addLine();
+			// split words by horizontal whitespace, regex \h
 			for (String word : theLine.split("\\h"))
 				ls.addWord(line, word);
 		}

@@ -4,39 +4,51 @@ import java.io.PrintStream;
 import java.util.ArrayList;
 
 /**
- * A LineStorage object is structured representation of a text file. A file is a
- * sequence of lines, each of which is a sequence of words. A word is a String
- * (also a sequence of char).
+ * An implementation of {@link LineStorage} in which the entire object is stored
+ * in-memory in a structured way. A word is represented as a {@link String}. A
+ * line is represented as an {@link ArrayList} of {@link String}. The line
+ * storage object is represented as an {@link ArrayList} of {@link ArrayList} of
+ * {@link String}.
  */
 public class CommonLineStorage implements LineStorage {
+
 	/**
 	 * For each line, the sequence of words in that line.
 	 */
 	private ArrayList<ArrayList<String>> theWords = new ArrayList<>();
 
+	/**
+	 * Creates a new empty text.
+	 */
 	public CommonLineStorage() {
 	}
 
+	@Override
 	public int numLines() {
 		return theWords.size();
 	}
 
+	@Override
 	public int numWordsInLine(int line) {
 		return theWords.get(line).size();
 	}
 
+	@Override
 	public int numCharsInWord(int line, int word) {
 		return theWords.get(line).get(word).length();
 	}
 
+	@Override
 	public char getChar(int line, int word, int c) {
 		return theWords.get(line).get(word).charAt(c);
 	}
 
+	@Override
 	public String getWord(int line, int word) {
 		return theWords.get(line).get(word);
 	}
 
+	@Override
 	public String getLineAsString(int line) {
 		StringBuffer buf = new StringBuffer();
 		for (String word : theWords.get(line)) {
@@ -46,13 +58,13 @@ public class CommonLineStorage implements LineStorage {
 		return buf.toString();
 	}
 
-	/** Adds a line and returns the index of the new line. */
+	@Override
 	public int addLine() {
 		theWords.add(new ArrayList<>());
 		return theWords.size() - 1;
 	}
 
-	/** Adds a word to a line and returns the index of the new word */
+	@Override
 	public int addWord(int line, String str) {
 		ArrayList<String> wordsInLine = theWords.get(line);
 		wordsInLine.add(str);
@@ -61,6 +73,7 @@ public class CommonLineStorage implements LineStorage {
 
 	// etc.
 
+	@Override
 	public void print(PrintStream out) {
 		for (ArrayList<String> line : theWords) {
 			for (String word : line) {

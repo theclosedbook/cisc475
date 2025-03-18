@@ -14,21 +14,13 @@ public class Alphabetizer {
 		this.ls = ls;
 	}
 
-	class IComp implements Comparator<Integer> {
-		@Override
-		public int compare(Integer o1, Integer o2) {
-			String line1 = ls.getLineAsString(o1),
-					line2 = ls.getLineAsString(o2);
-			return line1.compareTo(line2);
-		}
-	}
-
 	public void alph() {
 		int n = ls.numLines();
 		perm = new Integer[n];
 		for (int i = 0; i < n; i++)
 			perm[i] = i;
-		Comparator<Integer> comp = new IComp();
+		Comparator<Integer> comp = (Integer o1, Integer o2) -> ls
+				.getLineAsString(o1).compareTo(ls.getLineAsString(o2));
 		Arrays.sort(perm, comp);
 	}
 

@@ -72,7 +72,6 @@ public class Alphabetizing {
 					return 1; // lap2 is a prefix of lap1
 			}
 		}
-
 	}
 
 	/** Sorts shifts */

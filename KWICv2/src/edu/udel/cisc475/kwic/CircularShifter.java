@@ -2,7 +2,7 @@ package edu.udel.cisc475.kwic;
 
 public class CircularShifter {
 
-	LineStorage lsin;
+	private LineStorage lsin;
 
 	public CircularShifter(LineStorage lsin) {
 		this.lsin = lsin;

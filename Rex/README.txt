@@ -72,6 +72,7 @@ change in the future:
   6. Allow some "free form" (short essay) problems in addition to
      multiple choice.
  
-To build: change in to directory src/edu/udel/cisc675/rex and type
-"make".  Type "make test1" to run a test.  See the Makefile for
-further details.
+To build from command line: type "make".  Type "make test1" to run a
+test.  See the Makefile for further details.
+
+This project is also configured as an Eclipse project.

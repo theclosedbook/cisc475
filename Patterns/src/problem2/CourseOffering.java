@@ -61,5 +61,3 @@ public class CourseOffering extends Course {
 	}
 
 }
-
-

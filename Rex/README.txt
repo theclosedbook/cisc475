@@ -90,3 +90,74 @@ This leads to a pipeline-style architecture where the output of one module direc
 Such decomposition makes the system face issues when doing any change change. 
 For instance, any modification in the LaTeX structure (e.g., new formatting conventions, support for comments, or nested environments) 
 may require coordinated changes across multiple modules, violating the principle that a single module should absorb the impact of change. 
+
+Design V2
+Modules 
+1.ExamApplication - The main application module that orchestrates the overall process.
+2.LaTeXParser - Module for parsing LaTeX files into an abstract representation.
+3.Exam - Module representing the complete structure of an exam.
+4.Questions - Module representing a single question with its answers.
+5.Answers - Module representing a single multiple-choice answer.
+6.ExamRandomizer - Module for randomizing exam elements.
+7.LaTeXWriter: Module for writing an exam back to LaTeX format.
+
+USES Relation 
+
+1.ExamApplication USES LaTeXParser, Exam, ExamRandomizer, LaTeXWriter
+2.LaTeXParser USES Exam, Question, Answer
+3.Exam USES Question, ExamRandomizer
+4.Question USES Answer, ExamRandomizer
+5.ExamRandomizer USES Exam, Question, Answer
+6.LaTeXWriter USES Exam, Question, Answer
+
+
+Anticipation Of Change 
+Change 1: Supporting Different Input/Output Formats (e.g., Markdown or HTML)
+Design v1 Impact:
+The original design would require extensive changes across multiple modules. Format-specific code is scattered throughout the codebase:
+
+FindProblems and FindAnswers hardcode LaTeX patterns
+Output has LaTeX-specific knowledge embedded in its logic
+Almost every module would need modification to support new formats
+
+Design v2 Impact:
+In the new design, only the parser and writer modules would need to be modified:
+
+Create new parser classes implementing a common interface: MarkdownParser, HTMLParser
+Create new writer classes: MarkdownWriter, HTMLWriter
+Modify ExamApplication to select the appropriate parser and writer based on file extension
+The Exam, Question, and Answer classes would remain unchanged
+Change 2: Adding Support for Different Question Types (e.g., Fill-in-the-blank, Essay)
+Design v1 Impact:
+The original design assumes all questions are multiple-choice with the same LaTeX structure:
+
+FindAnswers hardcodes the expectation of \begin{enumerate} and \item
+The randomization logic assumes all answers can be permuted
+Would require changes to at least 3-4 modules, with high risk of introducing bugs
+
+Design v2 Impact:
+The new design could be extended with minimal changes:
+
+Create a QuestionType interface or abstract class
+Extend the Question class hierarchy with MultipleChoiceQuestion, EssayQuestion, etc.
+Modify LaTeXParser to identify question types during parsing
+Update LaTeXWriter to handle formatting for different question types
+ExamRandomizer would need to check question type before attempting randomization
+Core modules remain intact
+
+Change 3: Adding a GUI or Web Interface
+Design v1 Impact:
+The original design is tightly coupled to the processing flow and operates directly on text files:
+
+No separation between business logic and I/O operations
+Would require significant refactoring to separate concerns
+Character-based processing is difficult to integrate with a GUI
+
+Design v2 Impact:
+The new design cleanly separates model, processing, and I/O:
+
+Create a new UI module that interacts with existing modules
+No changes needed to Exam, Question, or Answer classes
+LaTeXParser and LaTeXWriter already handle file operations separately from data model
+UI could directly manipulate the exam model before generating output
+

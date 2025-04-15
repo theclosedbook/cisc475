@@ -76,3 +76,17 @@ To build from command line: type "make".  Type "make test1" to run a
 test.  See the Makefile for further details.
 
 This project is also configured as an Eclipse project.
+
+
+Critique of Design V1:
+
+While the Rex application adopts a modular structure with seven clearly separated classes 
+the design does not adhere to the deeper principles of 
+information hiding and design for change, as advocated by David Parnas. 
+Each module in Rex is defined by a processing step (e.g., FindProblems, FindAnswers, etc.), 
+rather than by encapsulating a design decision that might change. 
+This leads to a pipeline-style architecture where the output of one module directly gets fed to the next.
+
+Such decomposition makes the system face issues when doing any change change. 
+For instance, any modification in the LaTeX structure (e.g., new formatting conventions, support for comments, or nested environments) 
+may require coordinated changes across multiple modules, violating the principle that a single module should absorb the impact of change. 
